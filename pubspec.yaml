@@ -1,0 +1,5 @@
+name:  google_plus
+description:  A sample application
+dependencies:
+  js: any
+  web_ui: any

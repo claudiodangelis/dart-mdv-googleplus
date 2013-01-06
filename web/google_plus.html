@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Me on Google+</title>
+    <link rel="stylesheet" href="google_plus.css">
+  </head>
+  <body>
+    <p><b>{{ displayName }} on Google+</b>
+      <br/><em>{{ tagline }}</em></p>
+    <button id="authorize">Authorize</button>
+    
+    <div>
+      <img id="pic"/>
+      <div id="about">
+      </div>
+    </div>
+    <ul>
+    
+      <template iterate="url in urls">
+        <li><a href="{{ url }}">{{ url }}</a></li>
+      </template>
+    
+    </ul>
+    <script type="application/dart" src="google_plus.dart"></script>
+  </body>
+</html>
