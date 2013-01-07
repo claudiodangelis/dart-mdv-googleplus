@@ -9,7 +9,6 @@ final String SCOPE = 'https://www.googleapis.com/auth/plus.me';
 
 ButtonElement authBtn = query('#authorize');
 ButtonElement logoutBtn = query('#logout');
-ImageElement pic = query('#pic');
 DivElement about = query('#about');
 
 bool immediate = true;
@@ -17,6 +16,7 @@ bool immediate = true;
 String displayName = 'Me';
 String tagline;
 String aboutMe;
+String pic;
 
 List<String> urls = [];
 
@@ -32,8 +32,7 @@ main(){
         'immediate':immediate
         }),
         js.context.onAuthResponse), 1
-
-    );
+      );
     });
 
 
@@ -54,13 +53,13 @@ main(){
     js.context.RequestCallback = new js.Callback.many((js.Proxy jsonResp, var rawResp){
       var data = JSON.parse(rawResp);
 
-//      for( var url in data[0]['result']['urls']){
-//        urls.add(url['value']);
-//      }
+      for( var url in data[0]['result']['urls']){
+        urls.add(url['value']);
+      }
 
       displayName = data[0]['result']['displayName'];
       tagline = data[0]['result']['tagline'];
-      pic.src = data[0]['result']['image']['url'];
+      pic = data[0]['result']['image']['url'];
       aboutMe = data[0]['result']['aboutMe'];
 
       watchers.dispatch();
@@ -95,8 +94,7 @@ void MakeRequest(){
               'fields':'aboutMe,circledByCount,displayName,image,tagline,urls/value'
                 }));
         request.execute(js.context.RequestCallback);
-        }));
-
+      }));
   });
 }
 
@@ -105,6 +103,5 @@ void logout(){
   new Timer(500, (Timer t){
     logoutWindow.close();
     window.location.href = window.location.href;
-
   });
 }

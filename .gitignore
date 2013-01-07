@@ -2,4 +2,8 @@ packages
 pubspec.lock
 web/out
 web/packages
+web/google_plus.dart.js
+web/google_plus.dart.js.deps
+web/google_plus.dart.js.map
+
 

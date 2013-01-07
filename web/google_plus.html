@@ -9,30 +9,29 @@
   <body>
     <p><b>{{ displayName }} on Google+</b></p>
 
-    <template if="tagline != null">
+    <template instantiate="if tagline != null">
       <p><em>{{ tagline }}</em></p>
     </template>
-
 
     <button id="authorize">Authorize</button>
 
     <div>
-      <img id="pic"/>
-      <template if="aboutMe!=null">
-        <div id="about">
-          {{ aboutMe }}
-        </div>
+      <template instantiate="if pic != null">
+        <img id="pic" src="{{ pic }}"/>
+      </template>
+
+      <template instantiate="if aboutMe != null">
+        <div id="about" innerHTML="{{aboutMe}}"></div>
       </template>
     </div>
 
-    <ul>
-      <template if=" urls.length != 0 ">
+    <template instantiate="if urls.length > 0 ">
+      <ul>
         <template iterate="url in urls">
           <li><a href="{{ url }}">{{ url }}</a></li>
         </template>
-      </template>
-
-    </ul>
+      </ul>
+    </template>
 
     <button id="logout" on-click="logout()">Logout</button>
 
