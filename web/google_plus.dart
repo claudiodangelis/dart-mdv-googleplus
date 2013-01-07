@@ -56,7 +56,6 @@ main(){
       for( var url in data[0]['result']['urls']){
         urls.add(url['value']);
       }
-
       displayName = data[0]['result']['displayName'];
       tagline = data[0]['result']['tagline'];
       pic = data[0]['result']['image']['url'];

@@ -25,7 +25,7 @@
       </template>
     </div>
 
-    <template instantiate="if urls.length > 0 ">
+    <template instantiate="if urls.length != 0 ">
       <ul>
         <template iterate="url in urls">
           <li><a href="{{ url }}">{{ url }}</a></li>
