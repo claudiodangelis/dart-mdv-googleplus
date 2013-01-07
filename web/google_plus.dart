@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:json';
+import 'dart:isolate';
 import 'package:js/js.dart' as js;
 import 'package:web_ui/watcher.dart' as watchers;
 
@@ -7,13 +8,16 @@ final String CLIENT_ID = '688110452481.apps.googleusercontent.com';
 final String SCOPE = 'https://www.googleapis.com/auth/plus.me';
 
 ButtonElement authBtn = query('#authorize');
+ButtonElement logoutBtn = query('#logout');
 ImageElement pic = query('#pic');
 DivElement about = query('#about');
 
 bool immediate = true;
 
 String displayName = 'Me';
-String tagline = '';
+String tagline;
+String aboutMe;
+
 List<String> urls = [];
 
 main(){
@@ -32,14 +36,16 @@ main(){
     );
     });
 
-    
+
     js.context.onAuthResponse = new js.Callback.many((token){
       if(token!=null){
         authBtn.style.display='none';
+        logoutBtn.style.display='block';
         MakeRequest();
       }
       else{
         authBtn.style.display='block';
+        logoutBtn.style.display='none';
         immediate = false;
       }
     });
@@ -48,17 +54,17 @@ main(){
     js.context.RequestCallback = new js.Callback.many((js.Proxy jsonResp, var rawResp){
       var data = JSON.parse(rawResp);
 
-      for( var url in data[0]['result']['urls']){
-        urls.add(url['value']);
-      }
-      
+//      for( var url in data[0]['result']['urls']){
+//        urls.add(url['value']);
+//      }
+
       displayName = data[0]['result']['displayName'];
       tagline = data[0]['result']['tagline'];
       pic.src = data[0]['result']['image']['url'];
-      about.innerHtml = data[0]['result']['aboutMe'];
+      aboutMe = data[0]['result']['aboutMe'];
 
       watchers.dispatch();
-      
+
     });
   });
 
@@ -94,3 +100,11 @@ void MakeRequest(){
   });
 }
 
+void logout(){
+  Window logoutWindow = window.open("https://accounts.google.com/logout","Logout","height=500,width=500");
+  new Timer(500, (Timer t){
+    logoutWindow.close();
+    window.location.href = window.location.href;
+
+  });
+}

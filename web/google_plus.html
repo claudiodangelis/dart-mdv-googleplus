@@ -7,22 +7,35 @@
     <link rel="stylesheet" href="google_plus.css">
   </head>
   <body>
-    <p><b>{{ displayName }} on Google+</b>
-      <br/><em>{{ tagline }}</em></p>
+    <p><b>{{ displayName }} on Google+</b></p>
+
+    <template if="tagline != null">
+      <p><em>{{ tagline }}</em></p>
+    </template>
+
+
     <button id="authorize">Authorize</button>
-    
+
     <div>
       <img id="pic"/>
-      <div id="about">
-      </div>
-    </div>
-    <ul>
-    
-      <template iterate="url in urls">
-        <li><a href="{{ url }}">{{ url }}</a></li>
+      <template if="aboutMe!=null">
+        <div id="about">
+          {{ aboutMe }}
+        </div>
       </template>
-    
+    </div>
+
+    <ul>
+      <template if=" urls.length != 0 ">
+        <template iterate="url in urls">
+          <li><a href="{{ url }}">{{ url }}</a></li>
+        </template>
+      </template>
+
     </ul>
+
+    <button id="logout" on-click="logout()">Logout</button>
+
     <script type="application/dart" src="google_plus.dart"></script>
   </body>
 </html>
