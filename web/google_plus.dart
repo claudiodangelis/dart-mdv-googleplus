@@ -22,7 +22,7 @@ List<String> urls = [];
 main(){
 
   js.scoped((){
-    js.context.init = new js.Callback.many((){
+    js.context.init = new js.Callback.once((){
       js.context.window.setTimeout(js.context.auth, 1);
       });
     
@@ -51,9 +51,9 @@ main(){
       }
     });
 
-    js.context.MakeRequest = new js.Callback.many((){
+    js.context.MakeRequest = new js.Callback.once((){
       js.scoped((){
-        js.context.gapi.client.load('plus', 'v1', new js.Callback.many((){
+        js.context.gapi.client.load('plus', 'v1', new js.Callback.once((){
           var request = js.context.gapi.client.plus.people.get(
               js.map({
                 'userId':'me',
@@ -63,7 +63,7 @@ main(){
         }));
       });
     });
-    js.context.RequestCallback = new js.Callback.many((js.Proxy jsonResp, var rawResp){
+    js.context.RequestCallback = new js.Callback.once((js.Proxy jsonResp, var rawResp){
       var data = JSON.parse(rawResp);
 
       for( var url in data[0]['result']['urls']){
