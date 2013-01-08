@@ -1,17 +1,3 @@
-#pic{
-  float:left;
-  margin-right:10px;
-  margin-bottom:10px;
-}
-
-#authorize {
-  display:none;
-}
-
-#logout {
-  display: none;
-}
-
 body {
   background-color: #F8F8F8;
   font-family: 'Open Sans', sans-serif;
@@ -42,3 +28,14 @@ p {
 ul{
   clear:both;
 }
+
+#pic{
+  float:left;
+  margin-right:10px;
+  margin-bottom:10px;
+}
+
+#authorize {
+  display:none;
+}
+

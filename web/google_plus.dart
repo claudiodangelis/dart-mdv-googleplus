@@ -8,7 +8,6 @@ final String CLIENT_ID = '688110452481.apps.googleusercontent.com';
 final String SCOPE = 'https://www.googleapis.com/auth/plus.me';
 
 ButtonElement authBtn = query('#authorize');
-ButtonElement logoutBtn = query('#logout');
 DivElement about = query('#about');
 
 bool immediate = true;
@@ -23,8 +22,12 @@ List<String> urls = [];
 main(){
 
   js.scoped((){
-    js.context.init = new js.Callback.once(init);
-    js.context.auth = new js.Callback.many((){js.context.gapi.client.setApiKey('AIzaSyDOtMNdtbw17o9bs-kW7G6O3S05p0H8wYM');
+    js.context.init = new js.Callback.many((){
+      js.context.window.setTimeout(js.context.auth, 1);
+      });
+    
+    js.context.auth = new js.Callback.many((){
+      js.context.gapi.client.setApiKey('AIzaSyDOtMNdtbw17o9bs-kW7G6O3S05p0H8wYM');
       js.context.window.setTimeout(
         js.context.gapi.auth.authorize(js.map({
         'client_id':CLIENT_ID,
@@ -36,20 +39,30 @@ main(){
     });
 
 
-    js.context.onAuthResponse = new js.Callback.many((token){
+    js.context.onAuthResponse = new js.Callback.many((js.Proxy token){
       if(token!=null){
         authBtn.style.display='none';
-        logoutBtn.style.display='block';
-        MakeRequest();
+        js.context.MakeRequest();
+        immediate = true;
       }
       else{
         authBtn.style.display='block';
-        logoutBtn.style.display='none';
         immediate = false;
       }
     });
 
-    js.context.MakeRequest = new js.Callback.once(MakeRequest);
+    js.context.MakeRequest = new js.Callback.many((){
+      js.scoped((){
+        js.context.gapi.client.load('plus', 'v1', new js.Callback.many((){
+          var request = js.context.gapi.client.plus.people.get(
+              js.map({
+                'userId':'me',
+                'fields':'aboutMe,circledByCount,displayName,image,tagline,urls/value'
+              }));
+          request.execute(js.context.RequestCallback);
+        }));
+      });
+    });
     js.context.RequestCallback = new js.Callback.many((js.Proxy jsonResp, var rawResp){
       var data = JSON.parse(rawResp);
 
@@ -78,29 +91,4 @@ main(){
   script.type = "text/javascript";
   document.body.children.add(script);
 
-}
-
-void init(){
-  js.context.window.setTimeout(js.context.auth, 1);
-}
-
-void MakeRequest(){
-  js.scoped((){
-      js.context.gapi.client.load('plus', 'v1', new js.Callback.many((){
-        var request = js.context.gapi.client.plus.people.get(
-            js.map({
-              'userId':'me',
-              'fields':'aboutMe,circledByCount,displayName,image,tagline,urls/value'
-                }));
-        request.execute(js.context.RequestCallback);
-      }));
-  });
-}
-
-void logout(){
-  Window logoutWindow = window.open("https://accounts.google.com/logout","Logout","height=500,width=500");
-  new Timer(500, (Timer t){
-    logoutWindow.close();
-    window.location.href = window.location.href;
-  });
 }

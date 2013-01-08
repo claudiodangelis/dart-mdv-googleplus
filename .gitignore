@@ -1,3 +1,4 @@
+.buildlog
 packages
 pubspec.lock
 web/out
