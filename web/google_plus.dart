@@ -3,6 +3,7 @@ import 'dart:json';
 import 'dart:isolate';
 import 'package:js/js.dart' as js;
 import 'package:web_ui/watcher.dart' as watchers;
+import 'package:web_ui/safe_html.dart';
 
 final String CLIENT_ID = '688110452481.apps.googleusercontent.com';
 final String SCOPE = 'https://www.googleapis.com/auth/plus.me';
@@ -13,7 +14,7 @@ bool immediate = true;
 
 String displayName = 'Me';
 String tagline;
-String aboutMe;
+SafeHtml aboutMe;
 String pic;
 
 List<String> urls = [];
@@ -71,8 +72,8 @@ main(){
       displayName = data[0]['result']['displayName'];
       tagline = data[0]['result']['tagline'];
       pic = data[0]['result']['image']['url'];
-      aboutMe = data[0]['result']['aboutMe'];
-
+      aboutMe = new SafeHtml.unsafe('<div>''${data[0]['result']['aboutMe']}</div>');
+      
       watchers.dispatch();
 
     });

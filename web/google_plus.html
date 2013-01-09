@@ -14,16 +14,15 @@
     </template>
 
     <button id="authorize">Authorize</button>
-
-    <div>
-      <template instantiate="if pic != null">
+    
+    <template instantiate="if pic != null">
         <img id="pic" src="{{ pic }}"/>
       </template>
 
       <template instantiate="if aboutMe != null">
-        <div id="about" innerHTML="{{aboutMe}}"></div>
+        <div id="about">{{ aboutMe }}</div>
       </template>
-    </div>
+
 
     <template instantiate="if urls.length != 0 ">
       <ul>
