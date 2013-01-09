@@ -8,7 +8,6 @@ final String CLIENT_ID = '688110452481.apps.googleusercontent.com';
 final String SCOPE = 'https://www.googleapis.com/auth/plus.me';
 
 ButtonElement authBtn = query('#authorize');
-DivElement about = query('#about');
 
 bool immediate = true;
 
@@ -79,8 +78,7 @@ main(){
     });
   });
 
-  authBtn.on.click.add(
-      (Event e){
+  authBtn.on.click.add((Event e){
       js.scoped((){
         js.context.auth();
         });
@@ -90,5 +88,4 @@ main(){
   script.src = "http://apis.google.com/js/client.js?onload=init";
   script.type = "text/javascript";
   document.body.children.add(script);
-
 }
